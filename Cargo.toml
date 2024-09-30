@@ -3,6 +3,10 @@ name = "tera-template-macro"
 version = "0.1.0"
 authors=["Tebarem"]
 edition = "2021"
+description = "Proc Macro for tera-hot-reload crate"
+homepage = "https://github.com/oxidlabs/tera-template-macro"
+license = "MIT"
+keywords = ["tera", "template"]
 
 [dependencies]
 tera = { version = "1.20.0", default-features = false }
