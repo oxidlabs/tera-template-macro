@@ -8,10 +8,10 @@ This crate provides a proc macro for the [tera-hot-reload](https://github.com/ox
 
 The following dependencies are required to use this crate:
 
-*   [Tera](https://docs.rs/tera/1.20.0/terra/index.html) (version 1.20.0 or higher)
-*   [syn](https://doc.rust-lang.org/std/syn/index.html) (version 2.0.72 or higher)
-*   [quote](https://doc.rust-lang.org/std/quote/index.html) (version 1.0.37 or higher)
-*   [proc-macro2](https://docs.rs/proc-macro2/1.0.86 proc-macro2/index.html) (version 1.0.86 or higher)
+*   [Tera](https://keats.github.io/tera/docs/) (version 1.20.0 or higher)
+*   [syn](https://docs.rs/syn/latest/syn/) (version 2.0.72 or higher)
+*   [quote](https://docs.rs/quote/latest/quote/) (version 1.0.37 or higher)
+*   [proc-macro2](https://docs.rs/proc-macro2/1.0.86/proc_macro2/) (version 1.0.86 or higher)
 
 ## Contributing
 
