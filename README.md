@@ -1,4 +1,4 @@
-# Tera Template Macro README
+# Tera Template Macro
 
 ## Overview
 
