@@ -4,6 +4,33 @@
 
 This crate provides a proc macro for the [tera-hot-reload](https://github.com/oxidlabs/tera-hot-reload) crate, allowing for easier and more efficient templating in Rust.
 
+## Usuage
+
+Basic usuage example
+
+```Rust
+use tera_hot_reload::TeraTemplate;
+
+// Create a template
+#[derive(TeraTemplate)]
+#[template(path="index.html")]
+struct HelloTemplate {
+    name: String,
+    greeting: String,
+}
+
+// ...                                   axum::response::IntoResponse
+async fn index(tera: tera::Tera) -> impl IntoResponse {
+    let context = HelloTemplate {
+        name: "World".to_string(),
+        greeting: "Hello".to_string()
+    };
+    
+    // axum::response::Html
+    Html(context.render(tera))
+}
+```
+
 ## Dependencies
 
 The following dependencies are required to use this crate:

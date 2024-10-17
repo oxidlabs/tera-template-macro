@@ -5,7 +5,6 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, DeriveInput, Expr, Lit, Meta};
 
-
 #[proc_macro_derive(TeraTemplate, attributes(template))]
 pub fn tera_template_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -33,12 +32,10 @@ pub fn tera_template_derive(input: TokenStream) -> TokenStream {
     };
 
     let expanded = quote! {
-
         impl #name {
-            fn render(&self) -> String {
-                let tera = tera::Tera::new("templates/**/*").expect("Failed to create Tera instance");
+            fn render(&self, tera: tera::Tera) -> String {
                 let context = tera::Context::from_serialize(self).expect("Failed to create context");
-                let rendered = tera
+                let rendered =  tera
                     .render(#template_path, &context)
                     .expect("Failed to render template");
                 rendered
