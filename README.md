@@ -8,7 +8,7 @@ This crate provides a proc macro for the [tera-hot-reload](https://github.com/ox
 
 Basic usuage example
 
-```Rust
+```rust
 use tera_hot_reload::TeraTemplate;
 
 // Create a template
