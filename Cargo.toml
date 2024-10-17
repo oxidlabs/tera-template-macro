@@ -1,6 +1,6 @@
 [package]
 name = "tera-template-macro"
-version = "0.1.1"
+version = "0.1.2"
 authors=["Tebarem"]
 edition = "2021"
 description = "Proc Macro for tera-hot-reload crate"
@@ -15,3 +15,7 @@ quote = "1.0.37"
 proc-macro2 = "1.0.86"
 [lib]
 proc-macro = true
+[dev-dependencies]
+trybuild = "1.0.100"
+serde = { version = "1.0.210", features = ["derive"] }
+tera-hot-reload = "0.2.2"

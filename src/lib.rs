@@ -16,6 +16,16 @@ fn is_template_attr(attr: &&Attribute) -> bool {
     attr.path().is_ident("template")
 }
 
+fn parse_args(input: &Attribute) -> syn::Result<Meta> {
+    input.parse_args().map_err(|_| {
+        syn::Error::new_spanned(
+            input,
+            "Expected attribute argument `path` in parentheses: \
+        `#[template(path = \"index.html\")]`",
+        )
+    })
+}
+
 fn get_attr(input: &DeriveInput) -> syn::Result<&Attribute> {
     input.attrs.iter().find(is_template_attr).ok_or_else(|| {
         syn::Error::new_spanned(input, "The #[template(path = \"...\")] is required.")
@@ -54,8 +64,7 @@ fn get_lit_str(lit: ExprLit) -> syn::Result<LitStr> {
 }
 
 fn get_path_value(input: &Attribute) -> syn::Result<LitStr> {
-    input
-        .parse_args()
+    parse_args(input)
         .and_then(get_path_name_value)
         .and_then(get_lit_str)
 }
@@ -73,6 +82,7 @@ fn expand_struct(s: Struct) -> proc_macro2::TokenStream {
     let Struct { name, path } = s;
 
     quote! {
+        #[automatically_derived]
         impl #name {
             fn render(&self, tera: tera::Tera) -> String {
                 let context = tera::Context::from_serialize(self).expect("Failed to create context");
@@ -85,6 +95,31 @@ fn expand_struct(s: Struct) -> proc_macro2::TokenStream {
     }
 }
 
+/// Create a template from some struct
+///
+/// # Attribute
+///
+/// This macro requires the #[template(path = "...")] to be provided, this tells the derived
+/// template where to look for the file it renders.
+///
+/// ## Named Arguments
+///
+/// * path - A string literal ("hello world"), which contains the path to the file which will
+///   be rendered. E.g. path = "index.html".
+///
+/// # Example
+///
+/// 
+/// ```rust
+/// use tera_hot_reload::TeraTemplate;
+/// 
+/// #[derive(serde::Serialize, TeraTemplate)]
+/// #[template(path = "index.html")]
+/// struct MyTemplate {
+///     hello: String,
+///     world: String
+/// }
+/// ```
 #[proc_macro_derive(TeraTemplate, attributes(template))]
 pub fn tera_template_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
