@@ -11,6 +11,11 @@ Basic usuage example
 ```rust
 use tera_hot_reload::TeraTemplate;
 
+// create static tera
+pub static TERA: LazyLock<RwLock<Tera>> = LazyLock::new(|| {
+    RwLock::new(tera::Tera::new("templates/**/*").expect("Failed to create Tera instance"))
+});
+
 // Create a template
 #[derive(TeraTemplate)]
 #[template(path="index.html")]
@@ -19,15 +24,15 @@ struct HelloTemplate {
     greeting: String,
 }
 
-// ...                                   axum::response::IntoResponse
-async fn index(tera: tera::Tera) -> impl IntoResponse {
+//                                  axum::response::IntoResponse
+async fn index() -> impl IntoResponse {
     let context = HelloTemplate {
         name: "World".to_string(),
         greeting: "Hello".to_string()
     };
     
     // axum::response::Html
-    Html(context.render(tera))
+    Html(context.render(TERA.read().unwrap().clone()))
 }
 ```
 
